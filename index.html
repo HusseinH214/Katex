@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>KaTeX Notes</title>
-    <link rel="stylesheet" href="styling.css">
-      <!-- KaTeX CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
 
-    <!-- KaTeX JS -->
+    <!--Dependencies-->
+    <link rel="stylesheet" href="styling.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
 
-    <!--this is for the manifest.json file-->
+    <!--Links for a PWA manifest file -->
     <link rel="manifest" href="manifest.json">
 
 </head>
 <body>
-  <div id="container">
+  <div id="container"> 
       <div id="preview"></div>
       <div id="editor" contenteditable="true" spellcheck="false"></div>
   </div>
@@ -23,6 +22,7 @@
   <script src="scripting.js"></script>
 
   <script>
+    <!--Registers a service worker for offline functionality and caching, but only after the page loads and only if the browser supports service workers.-->
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('service-worker.js')

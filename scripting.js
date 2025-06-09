@@ -1,25 +1,32 @@
+// Gets references to the editor and preview elements for manipulation.
 const editor = document.getElementById("editor");
 const preview = document.getElementById("preview");
 
+// Attaches an event listener that triggers on every keystroke or content change in the editor
 editor.addEventListener("input", () => {
-  renderFromSlash();
+  renderAllText();
 });
 
-function renderFromSlash() {
+function renderAllText() {
   const text = editor.textContent;
+  
+  if (!text) {
+    preview.innerHTML = ""; // Clear if no text
+    return;
+  }
 
-  // Try to find the latest valid-looking LaTeX expression
-  const match = text.match(/\\[a-zA-Z0-9{}\s^_\\]+$/);
-
-  if (match) {
-    const latex = match[0];
-    try {
-      const rendered = katex.renderToString(latex, { throwOnError: false });
-      preview.innerHTML = rendered;
-    } catch (e) {
-      preview.innerHTML = `<span style="color:red;">Invalid LaTeX</span>`;
-    }
-  } else {
-    preview.innerHTML = ""; // Clear if no LaTeX detected
+  try {
+    // Try to render the entire text as LaTeX/KaTeX
+    // KaTeX can handle regular text mixed with LaTeX expressions
+    const rendered = katex.renderToString(text, { 
+      throwOnError: false,
+      displayMode: false // inline mode for mixed content
+    });
+    preview.innerHTML = rendered;
+  } catch (e) {
+    // If KaTeX fails completely, show the text as plain HTML
+    // Replace spaces with non-breaking spaces to preserve them
+    const preservedSpaces = text.replace(/ /g, '&nbsp;');
+    preview.innerHTML = `<span>${preservedSpaces}</span>`;
   }
 }
